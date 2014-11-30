@@ -48,7 +48,7 @@ class MainHandler(Handler):
 		except oauth.OAuthRequestError, e:
 			print "hello"
 
-		self.render("injection.html")
+		self.render("login.html")
 	def post(self):
 		var = self.request.get("friend1")
 		print int(var) + 55
