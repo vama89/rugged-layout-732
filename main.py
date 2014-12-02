@@ -42,17 +42,35 @@ class Handler(webapp2.RequestHandler):
 
 class MainHandler(Handler):
 	def get(self):
-		try:
-			user = oauth.get_current_user()
-			print user
-		except oauth.OAuthRequestError, e:
-			print "hello"
-
-		self.render("login.html")
+		self.render("welcome.html")
 	def post(self):
-		var = self.request.get("friend1")
-		print int(var) + 55
+		friend1 = self.request.get("friend1")
+		friend2 = self.request.get("friend2")
+		friend3 = self.request.get("friend3")
+		friend4 = self.request.get("friend4")
+		friend5 = self.request.get("friend5")
+		
+		date1 = self.request.get("date1")
+		time1 = self.request.get("time1")
+		place1 = self.request.get("place1")
+
+		date2 = self.request.get("date2")
+		time2 = self.request.get("time2")
+		place2 = self.request.get("place2")
+
+		date3 = self.request.get("date3")
+		time3 = self.request.get("time3")
+		place3 = self.request.get("place3")
+
 		self.redirect("/")
+
+class Login(Handler):
+	def get(self):
+		self.render("signup-form.html")
+
+class Register(Handler):
+	def get(self):
+		self.render("welcome.html")
 
 #DataBase Addition
 class User(ndb.Model):
@@ -76,5 +94,7 @@ class Group(ndb.Model):
 
 
 app = webapp2.WSGIApplication([
-	('/', MainHandler)
+	('/', MainHandler),
+	('/Login', Login),
+	('/Register', Register)
 ], debug=True)
