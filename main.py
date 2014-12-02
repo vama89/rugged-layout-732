@@ -86,7 +86,13 @@ class MainHandler(BlogHandler):
 	def get(self):
 		self.render("welcome.html")
 
+class CreateEvent(BlogHandler):
+	def get(self):
+		self.render("create.html")
+		
 	def post(self):
+		event = self.request.get("event")
+
 		friend1 = self.request.get("friend1")
 		friend2 = self.request.get("friend2")
 		friend3 = self.request.get("friend3")
@@ -106,6 +112,8 @@ class MainHandler(BlogHandler):
 		place3 = self.request.get("place3")
 
 		self.redirect("/")
+
+
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 def valid_username(username):
     return username and USER_RE.match(username)
@@ -255,5 +263,6 @@ app = webapp2.WSGIApplication([
 	('/', MainHandler),
 	('/Login', Login),
 	('/Register', Register),
-	('/Logout', Logout)
+	('/Logout', Logout),
+	('/CreateEvent', CreateEvent)
 ], debug=True)
