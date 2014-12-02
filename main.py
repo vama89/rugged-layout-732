@@ -180,7 +180,7 @@ class Login(BlogHandler):
         u = User.login(username, password)
         if u:
             self.login(u)
-            self.redirect('/')
+            self.render("welcome.html", username=username)
         else:
             msg = 'Invalid login'
             self.render('register.html', error = msg)
@@ -207,7 +207,7 @@ def valid_pw(name, password, h):
 
 def users_key(group = 'default'):
     return db.Key.from_path('users', group)
-    
+
 class User(db.Model):
     name = db.StringProperty(required = True)
     pw_hash = db.StringProperty(required = True)
@@ -254,5 +254,6 @@ class Group(db.Model):
 app = webapp2.WSGIApplication([
 	('/', MainHandler),
 	('/Login', Login),
-	('/Register', Register)
+	('/Register', Register),
+	('/Logout', Logout)
 ], debug=True)
