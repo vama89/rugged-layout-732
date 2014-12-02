@@ -2,4 +2,40 @@
 
 {% block content %}
 <h2>Welcome {{username}}</h2>
+
+<form method="post">
+	<input type="string" name="friend1"placeholder="Name">
+	<input type="string" name="friend2"placeholder="Name">
+	<input type="string" name="friend3"placeholder="Name">
+	<input type="string" name="friend4"placeholder="Name">
+	<input type="string" name="friend5"placeholder="Name">
+	<br>
+	<br>
+	<div>Event1</div>
+	<input type="date" name="date1" placeholder="Date">
+	<br>
+	<input type="time" name="time1">
+	<br>
+	<input type="string" name="place1" placeholder="Place">
+	<br>
+	<br>
+	<div>Event2</div>
+	<input type="date" name="date2" placeholder="Date">
+	<br>
+	<input type="time" name="time2">
+	<br>
+	<input type="string" name="place2" placeholder="Place">
+	<br>
+	<br>
+	<div>Event3</div>
+	<input type="date" name="date3" placeholder="Date">
+	<br>
+	<input type="time" name="time3">
+	<br>
+	<input type="string" name="place3" placeholder="Place">
+	<br>
+
+	<input type="submit">
+</form>
+
 {% endblock %}
