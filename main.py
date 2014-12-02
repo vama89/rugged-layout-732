@@ -28,7 +28,7 @@ import hmac
 from string import letters
 
 #Database Addition
-from google.appengine.ext import ndb
+from google.appengine.ext import db
 from google.appengine.api import oauth
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -192,10 +192,26 @@ class Logout(BlogHandler):
 
 
 #DataBase Addition
-class User(ndb.Model):
-    name = ndb.StringProperty(required = True)
-    pw_hash = ndb.StringProperty(required = True)
-    email = ndb.StringProperty()
+def make_salt(length = 5):
+    return ''.join(random.choice(letters) for x in xrange(length))
+
+def make_pw_hash(name, pw, salt = None):
+    if not salt:
+        salt = make_salt()
+    h = hashlib.sha256(name + pw + salt).hexdigest()
+    return '%s,%s' % (salt, h)
+
+def valid_pw(name, password, h):
+    salt = h.split(',')[0]
+    return h == make_pw_hash(name, password, salt)
+
+def users_key(group = 'default'):
+    return db.Key.from_path('users', group)
+    
+class User(db.Model):
+    name = db.StringProperty(required = True)
+    pw_hash = db.StringProperty(required = True)
+    email = db.StringProperty()
 
     @classmethod
     def by_id(cls, uid):
@@ -220,18 +236,18 @@ class User(ndb.Model):
         if u and valid_pw(name, pw, u.pw_hash):
             return u
 
-class Event(ndb.Model):
-	date = ndb.DateProperty(required = True)
-	time = ndb.TimeProperty(required = True)
-	place = ndb.StringProperty(required = True)
+class Event(db.Model):
+	date = db.DateProperty(required = True)
+	time = db.TimeProperty(required = True)
+	place = db.StringProperty(required = True)
 
-class Group(ndb.Model):
-	admin = ndb.StringProperty(required = True)
-	name1 = ndb.StringProperty(required = True)
-	name2 = ndb.StringProperty(required = True)
-	name3 = ndb.StringProperty(required = True)
-	name4 = ndb.StringProperty(required = True)
-	name5 = ndb.StringProperty(required = True)
+class Group(db.Model):
+	admin = db.StringProperty(required = True)
+	name1 = db.StringProperty(required = True)
+	name2 = db.StringProperty(required = True)
+	name3 = db.StringProperty(required = True)
+	name4 = db.StringProperty(required = True)
+	name5 = db.StringProperty(required = True)
 
 
 
