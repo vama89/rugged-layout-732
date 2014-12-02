@@ -89,7 +89,7 @@ class MainHandler(BlogHandler):
 class CreateEvent(BlogHandler):
 	def get(self):
 		self.render("create.html")
-		
+
 	def post(self):
 		event = self.request.get("event")
 
@@ -110,6 +110,9 @@ class CreateEvent(BlogHandler):
 		date3 = self.request.get("date3")
 		time3 = self.request.get("time3")
 		place3 = self.request.get("place3")
+
+		event = Event(date=date1,time=time1,place=place1)
+		event.put()
 
 		self.redirect("/")
 
@@ -245,19 +248,9 @@ class User(db.Model):
             return u
 
 class Event(db.Model):
-	date = db.DateProperty(required = True)
-	time = db.TimeProperty(required = True)
+	date = db.StringProperty(required = True)
+	time = db.StringProperty(required = True)
 	place = db.StringProperty(required = True)
-
-class Group(db.Model):
-	admin = db.StringProperty(required = True)
-	name1 = db.StringProperty(required = True)
-	name2 = db.StringProperty(required = True)
-	name3 = db.StringProperty(required = True)
-	name4 = db.StringProperty(required = True)
-	name5 = db.StringProperty(required = True)
-
-
 
 app = webapp2.WSGIApplication([
 	('/', MainHandler),
