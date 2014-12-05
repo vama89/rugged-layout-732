@@ -116,6 +116,10 @@ class CreateEvent(BlogHandler):
 
 		self.redirect("/")
 
+class Vote(BlogHandler):
+	def get(self):
+		self.render("vote.html")
+
 
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 def valid_username(username):
@@ -257,5 +261,6 @@ app = webapp2.WSGIApplication([
 	('/Login', Login),
 	('/Register', Register),
 	('/Logout', Logout),
-	('/CreateEvent', CreateEvent)
+	('/CreateEvent', CreateEvent),
+	('/Vote', Vote)
 ], debug=True)
