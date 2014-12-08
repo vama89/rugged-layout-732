@@ -99,7 +99,7 @@ class CreateEvent(BlogHandler):
 		friend4 = self.request.get("friend4")
 		friend5 = self.request.get("friend5")
 		
-		date1 = self.request.get("date1")
+		date1 = self.request.get("date1") 
 		time1 = self.request.get("time1")
 		place1 = self.request.get("place1")
 
@@ -111,10 +111,10 @@ class CreateEvent(BlogHandler):
 		time3 = self.request.get("time3")
 		place3 = self.request.get("place3")
 
-		event = Event(date=date1,time=time1,place=place1)
-		event.put()
+		#event = Event(date=date1,time=time1,place=place1)
+		#event.put()
 
-		self.redirect("/")
+		self.redirect("/CreateEvent")
 
 class Vote(BlogHandler):
 	def get(self):
@@ -252,9 +252,37 @@ class User(db.Model):
             return u
 
 class Event(db.Model):
-	date = db.StringProperty(required = True)
-	time = db.StringProperty(required = True)
-	place = db.StringProperty(required = True)
+	eventName = db.StringProperty(required = True)
+
+	hang1VoteCount = db.IntegerProperty(required = True)
+	hang2VoteCount = db.IntegerProperty(required = True)
+	hang3VoteCount = db.IntegerProperty(required = True)
+
+	userNumberTotal= db.IntegerProperty(required = True)
+
+	user1Vote = db.BooleanProperty(required = True)
+	user2Vote = db.BooleanProperty(required = True)
+	user3Vote = db.BooleanProperty(required = True)
+	user4Vote = db.BooleanProperty(required = True)
+	user5Vote = db.BooleanProperty(required = True)
+
+	user1 = db.StringProperty(required=True)
+	user2 = db.StringProperty(required=True)
+	user3 = db.StringProperty(required=True)
+	user4 = db.StringProperty(required=True)
+	user5 = db.StringProperty(required=True)
+
+	date1 = db.DateProperty(required = True)
+	time1 = db.TimeProperty(required = True)
+	place1 = db.StringProperty(required = True)
+
+	date2 = db.DateProperty(required = True)
+	time2 = db.TimeProperty(required = True)
+	place2 = db.StringProperty(required = True)
+
+	date3 = db.DateProperty(required = True)
+	time3 = db.TimeProperty(required = True)
+	place3 = db.StringProperty(required = True)
 
 app = webapp2.WSGIApplication([
 	('/', MainHandler),
