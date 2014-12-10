@@ -273,7 +273,7 @@ class Login(BlogHandler):
     	if self.request.cookies:
     		self.render("welcome.html")
     	else:
-    		self.render("register.html")
+    		self.render("login.html")
 
     def post(self):
         username = self.request.get('username')
@@ -285,7 +285,7 @@ class Login(BlogHandler):
             self.render("welcome.html")
         else:
             msg = 'Invalid login'
-            self.render('register.html', error = msg)
+            self.render('login.html', error = msg)
 
 class Logout(BlogHandler):
     def get(self):
