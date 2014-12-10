@@ -91,11 +91,49 @@ class MainHandler(BlogHandler):
 		self.render("home.html")
 
 class CreateEvent(BlogHandler):
+	def render_front(self, 	event = "",
+							date_frame_open="",
+							date_frame_close="",
+							friend1="",
+							friend2="",
+							friend3="",
+							friend4="",
+							friend5="",
+							date1="",
+							time1="",
+							place1="",
+							date2="",
+							time2="",
+							place2="",
+							date3="",
+							time3="",
+							place3=""):
+
+		self.render("create.html", 	event = event,
+									date_frame_open=date_frame_open,
+									date_frame_close=date_frame_close,
+									friend1=friend1,
+									friend2=friend2,
+									friend3=friend3,
+									friend4=friend4,
+									friend5=friend5,
+									date1=date1,
+									time1=time1,
+									place1=place1,
+									date2=date2,
+									time2=time2,
+									place2=place2,
+									date3=date3,
+									time3=time3,
+									place3=place3)
 	def get(self):
-		self.render("create.html")
+		self.render_front()
 
 	def post(self):
 		event = self.request.get("event")
+
+		date_frame_open = self.request.get("date_frame_open")
+		date_frame_close = self.request.get("date_frame_close")
 
 		friend1 = self.request.get("friend1")
 		friend2 = self.request.get("friend2")
@@ -115,14 +153,56 @@ class CreateEvent(BlogHandler):
 		time3 = self.request.get("time3")
 		place3 = self.request.get("place3")
 
-		#event = Event(date=date1,time=time1,place=place1)
-		#event.put()
+		try:
+			hangout = Event(event = event,
+							date_frame_open=date_frame_open,
+							date_frame_close=date_frame_close,
+							friend1=friend1,
+							friend2=friend2,
+							friend3=friend3,
+							friend4=friend4,
+							friend5=friend5,
+							date1=date1,
+							time1=time1,
+							place1=place1,
+							date2=date2,
+							time2=time2,
+							place2=place2,
+							date3=date3,
+							time3=time3,
+							place3=place3)
+		
+			event.put()
+			self.redirect('/')
 
-		self.redirect("/CreateEvent")
+		except:
+			self.render("create.html", 	event = event,
+										date_frame_open=date_frame_open,
+										date_frame_close=date_frame_close,
+										friend1=friend1,
+										friend2=friend2,
+										friend3=friend3,
+										friend4=friend4,
+										friend5=friend5,
+										date1=date1,
+										time1=time1,
+										place1=place1,
+										date2=date2,
+										time2=time2,
+										place2=place2,
+										date3=date3,
+										time3=time3,
+										place3=place3 )
+
+		#self.redirect("/CreateEvent")
 
 class Vote(BlogHandler):
 	def get(self):
 		self.render("vote.html")
+
+class Welcome(BlogHandler):
+	def get(self):
+		self.render("welcome.html")
 
 
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
@@ -190,7 +270,10 @@ class Register(Signup):
 
 class Login(BlogHandler):
     def get(self):
-        self.render('register.html')
+    	if self.request.cookies:
+    		self.render("welcome.html")
+    	else:
+    		self.render("register.html")
 
     def post(self):
         username = self.request.get('username')
@@ -199,7 +282,7 @@ class Login(BlogHandler):
         u = User.login(username, password)
         if u:
             self.login(u)
-            self.render("welcome.html", username=username)
+            self.render("welcome.html")
         else:
             msg = 'Invalid login'
             self.render('register.html', error = msg)
@@ -258,6 +341,9 @@ class User(db.Model):
 class Event(db.Model):
 	eventName = db.StringProperty(required = True)
 
+	timeFrameOpen = db.StringProperty(required=True)
+	timeFrameClose = db.StringProperty(required=True)
+
 	hang1VoteCount = db.IntegerProperty(required = True)
 	hang2VoteCount = db.IntegerProperty(required = True)
 	hang3VoteCount = db.IntegerProperty(required = True)
@@ -294,5 +380,6 @@ app = webapp2.WSGIApplication([
 	('/Register', Register),
 	('/Logout', Logout),
 	('/CreateEvent', CreateEvent),
-	('/Vote', Vote)
+	('/Vote', Vote),
+	('/Welcome', Welcome)
 ], debug=True)
