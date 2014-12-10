@@ -6,8 +6,13 @@
 <a href="/CreateEvent">CreateEvent</a>
 <br>
 <h2>You've Just been Invited. Waiting for your Vote!</h2>
-<p>Joe's Birthday Bash <a href="/Vote">Vote</a></p>
-<h2>Thanks for voting. Waiting For Friend's to Vote</h2>
+<p>{% for p in hangouts %}
+	{{p.eventName}}
+		<br>
+
+		{% endfor %}
+</p>
+<h2>Thanks for voting. Waiting For Friends to Vote</h2>
 <p>Pete's Bachelor Party</p>
 <h2>Everyone Voted. Events You have Scheduled.</h2>
 <p>Michelle's Bachelertte</p>

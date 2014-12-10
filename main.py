@@ -142,11 +142,19 @@ class CreateEvent(BlogHandler):
 						place3=place3)
 
 		hangout.put()
-		self.render("welcome.html")
+		self.redirect("/UserDashboard")
 
 class Vote(BlogHandler):
 	def get(self):
 		self.render("vote.html")
+
+class UserDashboard(BlogHandler):
+	def get(self):
+		hangouts = db.GqlQuery("select * from Event")
+		for p in hangouts:
+			print p.eventName
+		self.render("welcome.html", hangouts=hangouts)
+
 
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 def valid_username(username):
@@ -222,7 +230,7 @@ class Login(BlogHandler):
         u = User.login(username, password)
         if u:
             self.login(u)
-            self.render("welcome.html")
+            self.redirect("/UserDashboard")
         else:
             msg = 'Invalid login'
             self.render('login.html', error = msg)
@@ -320,5 +328,6 @@ app = webapp2.WSGIApplication([
 	('/Register', Register),
 	('/Logout', Logout),
 	('/CreateEvent', CreateEvent),
-	('/Vote', Vote)
+	('/Vote', Vote),
+	('/UserDashboard', UserDashboard)
 ], debug=True)
