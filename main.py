@@ -142,7 +142,7 @@ class CreateEvent(BlogHandler):
 						place3=place3)
 
 		hangout.put()
-		self.redirect("/UserDashboard")
+		self.render("welcome.html")
 
 class Vote(BlogHandler):
 	def get(self):
@@ -150,9 +150,7 @@ class Vote(BlogHandler):
 
 class UserDashboard(BlogHandler):
 	def get(self):
-		hangouts = db.GqlQuery("select * from Event")
-		for p in hangouts:
-			print p.eventName
+		hangouts = db.GqlQuery("SELECT * FROM Event ORDER BY created DESC")
 		self.render("welcome.html", hangouts=hangouts)
 
 
@@ -321,6 +319,8 @@ class Event(db.Model):
 	date3 = db.StringProperty(required = True)
 	time3 = db.StringProperty(required = True)
 	place3 = db.StringProperty(required = True)
+
+	created = db.DateTimeProperty(auto_now_add = True)
 
 app = webapp2.WSGIApplication([
 	('/', MainHandler),
