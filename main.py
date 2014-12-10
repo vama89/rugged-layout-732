@@ -84,11 +84,7 @@ class BlogHandler(webapp2.RequestHandler):
 
 class MainHandler(BlogHandler):
 	def get(self):
-		#if logged-in
-			#go to the welcome.html
-		#else:
-			#go to home.html
-		self.render("home.html")
+		self.render("welcome.html")
 
 class CreateEvent(BlogHandler):
 	def render_front(self, 	event = "",
