@@ -84,52 +84,17 @@ class BlogHandler(webapp2.RequestHandler):
 
 class MainHandler(BlogHandler):
 	def get(self):
-		self.render("welcome.html")
+		self.render("home.html")
 
 class CreateEvent(BlogHandler):
-	def render_front(self, 	event = "",
-							date_frame_open="",
-							date_frame_close="",
-							friend1="",
-							friend2="",
-							friend3="",
-							friend4="",
-							friend5="",
-							date1="",
-							time1="",
-							place1="",
-							date2="",
-							time2="",
-							place2="",
-							date3="",
-							time3="",
-							place3=""):
-
-		self.render("create.html", 	event = event,
-									date_frame_open=date_frame_open,
-									date_frame_close=date_frame_close,
-									friend1=friend1,
-									friend2=friend2,
-									friend3=friend3,
-									friend4=friend4,
-									friend5=friend5,
-									date1=date1,
-									time1=time1,
-									place1=place1,
-									date2=date2,
-									time2=time2,
-									place2=place2,
-									date3=date3,
-									time3=time3,
-									place3=place3)
 	def get(self):
-		self.render_front()
+		self.render("create.html")
 
 	def post(self):
-		event = self.request.get("event")
+		eventName = self.request.get("event")
 
-		date_frame_open = self.request.get("date_frame_open")
-		date_frame_close = self.request.get("date_frame_close")
+		dateFrameOpen = self.request.get("dateFrameOpen")
+		dateFrameClose = self.request.get("dateFrameClose")
 
 		friend1 = self.request.get("friend1")
 		friend2 = self.request.get("friend2")
@@ -149,57 +114,39 @@ class CreateEvent(BlogHandler):
 		time3 = self.request.get("time3")
 		place3 = self.request.get("place3")
 
-		try:
-			hangout = Event(event = event,
-							date_frame_open=date_frame_open,
-							date_frame_close=date_frame_close,
-							friend1=friend1,
-							friend2=friend2,
-							friend3=friend3,
-							friend4=friend4,
-							friend5=friend5,
-							date1=date1,
-							time1=time1,
-							place1=place1,
-							date2=date2,
-							time2=time2,
-							place2=place2,
-							date3=date3,
-							time3=time3,
-							place3=place3)
-		
-			event.put()
-			self.redirect('/')
+		hangout = Event(eventName = eventName,
+						dateFrameOpen=dateFrameOpen,
+						dateFrameClose=dateFrameClose,
+						hang1VoteCount=0,
+						hang2VoteCount=0,
+						hang3VoteCount=0,
+						userNumberTotal=5,
+						user1Voted=0,
+						user2Voted=0,
+						user3Voted=0,
+						user4Voted=0,
+						user5Voted=0,
+						user1=friend1,
+						user2=friend2,
+						user3=friend3,
+						user4=friend4,
+						user5=friend5,
+						date1=date1,
+						time1=time1,
+						place1=place1,
+						date2=date2,
+						time2=time2,
+						place2=place2,
+						date3=date3,
+						time3=time3,
+						place3=place3)
 
-		except:
-			self.render("create.html", 	event = event,
-										date_frame_open=date_frame_open,
-										date_frame_close=date_frame_close,
-										friend1=friend1,
-										friend2=friend2,
-										friend3=friend3,
-										friend4=friend4,
-										friend5=friend5,
-										date1=date1,
-										time1=time1,
-										place1=place1,
-										date2=date2,
-										time2=time2,
-										place2=place2,
-										date3=date3,
-										time3=time3,
-										place3=place3 )
-
-		#self.redirect("/CreateEvent")
+		hangout.put()
+		self.render("welcome.html")
 
 class Vote(BlogHandler):
 	def get(self):
 		self.render("vote.html")
-
-class Welcome(BlogHandler):
-	def get(self):
-		self.render("welcome.html")
-
 
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 def valid_username(username):
@@ -266,10 +213,7 @@ class Register(Signup):
 
 class Login(BlogHandler):
     def get(self):
-    	if self.request.cookies:
-    		self.render("welcome.html")
-    	else:
-    		self.render("login.html")
+    	self.render("login.html")
 
     def post(self):
         username = self.request.get('username')
@@ -337,8 +281,8 @@ class User(db.Model):
 class Event(db.Model):
 	eventName = db.StringProperty(required = True)
 
-	timeFrameOpen = db.StringProperty(required=True)
-	timeFrameClose = db.StringProperty(required=True)
+	dateFrameOpen = db.StringProperty(required=True)
+	dateFrameClose = db.StringProperty(required=True)
 
 	hang1VoteCount = db.IntegerProperty(required = True)
 	hang2VoteCount = db.IntegerProperty(required = True)
@@ -346,11 +290,11 @@ class Event(db.Model):
 
 	userNumberTotal= db.IntegerProperty(required = True)
 
-	user1Vote = db.BooleanProperty(required = True)
-	user2Vote = db.BooleanProperty(required = True)
-	user3Vote = db.BooleanProperty(required = True)
-	user4Vote = db.BooleanProperty(required = True)
-	user5Vote = db.BooleanProperty(required = True)
+	user1Voted = db.IntegerProperty(required = True)
+	user2Voted = db.IntegerProperty(required = True)
+	user3Voted = db.IntegerProperty(required = True)
+	user4Voted = db.IntegerProperty(required = True)
+	user5Voted = db.IntegerProperty(required = True)
 
 	user1 = db.StringProperty(required=True)
 	user2 = db.StringProperty(required=True)
@@ -358,16 +302,16 @@ class Event(db.Model):
 	user4 = db.StringProperty(required=True)
 	user5 = db.StringProperty(required=True)
 
-	date1 = db.DateProperty(required = True)
-	time1 = db.TimeProperty(required = True)
+	date1 = db.StringProperty(required = True)
+	time1 = db.StringProperty(required = True)
 	place1 = db.StringProperty(required = True)
 
-	date2 = db.DateProperty(required = True)
-	time2 = db.TimeProperty(required = True)
+	date2 = db.StringProperty(required = True)
+	time2 = db.StringProperty(required = True)
 	place2 = db.StringProperty(required = True)
 
-	date3 = db.DateProperty(required = True)
-	time3 = db.TimeProperty(required = True)
+	date3 = db.StringProperty(required = True)
+	time3 = db.StringProperty(required = True)
 	place3 = db.StringProperty(required = True)
 
 app = webapp2.WSGIApplication([
@@ -376,6 +320,5 @@ app = webapp2.WSGIApplication([
 	('/Register', Register),
 	('/Logout', Logout),
 	('/CreateEvent', CreateEvent),
-	('/Vote', Vote),
-	('/Welcome', Welcome)
+	('/Vote', Vote)
 ], debug=True)
