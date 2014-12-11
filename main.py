@@ -142,7 +142,7 @@ class CreateEvent(BlogHandler):
 						place3=place3)
 
 		hangout.put()
-		self.render("welcome.html")
+		self.redirect("/UserDashboard")
 
 class Vote(BlogHandler):
 	def get(self):
@@ -152,6 +152,17 @@ class UserDashboard(BlogHandler):
 	def get(self):
 		hangouts = db.GqlQuery("SELECT * FROM Event ORDER BY created DESC")
 		self.render("welcome.html", hangouts=hangouts)
+
+		#pseudocode for later
+		#Section to display for "waitings for vote"
+
+		#Section to display for "Thanks for your vote.Waiting on friends"
+
+		#Section to display for "Everyone voted. Events your're looking forward to"
+
+class Blog(BlogHandler):
+	def get(self):
+		self.render("blog.html")
 
 
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
@@ -329,5 +340,6 @@ app = webapp2.WSGIApplication([
 	('/Logout', Logout),
 	('/CreateEvent', CreateEvent),
 	('/Vote', Vote),
-	('/UserDashboard', UserDashboard)
+	('/UserDashboard', UserDashboard),
+	('/Blog', Blog)
 ], debug=True)
